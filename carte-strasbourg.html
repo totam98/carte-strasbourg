@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Points on a map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      // The value for 'accessToken' begins with 'pk...'
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoibnRvdGFtIiwiYSI6ImNtMWhwMnBnNzBpNDEybnNpazAyeGlxeXMifQ.ttnzv1KfzJ2gO0i1SmaDMg";
+      const map = new mapboxgl.Map({
+        container: "map",
+        // Replace YOUR_STYLE_URL with your style URL.
+        style: "mapbox://styles/ntotam/cm1iftf8700bq01ph1y4o6axq",
+        center: [7.746373, 48.584262],
+        zoom: 14.59,
+      });
+
+      // Code from the next step will go here.
+      map.on("click", (event) => {
+        // If the user clicked on one of your markers, get its information.
+        const features = map.queryRenderedFeatures(event.point, {
+          layers: [
+            "strasbourg-1",
+            "strasbourg-2",
+            "strasbourg-3",
+            "strasbourg-4",
+            "strasbourg-5",
+            "strasbourg-6",
+            "strasbourg-7",
+            "strasbourg-8",
+            "strasbourg-9",
+            "strasbourg-10",
+            "strasbourg-11",
+          ], // replace with your layer name
+        });
+        if (!features.length) {
+          return;
+        }
+        const feature = features[0];
+
+        // Code from the next step will go here.
+        const popup = new mapboxgl.Popup({ offset: [0, -15] })
+          .setLngLat(feature.geometry.coordinates)
+          .setHTML(
+            `<h3>${feature.properties.name}</h3><p>${feature.properties.description}</p>`
+          )
+          .addTo(map);
+      });
+    </script>
+  </body>
+</html>
